@@ -1,0 +1,17 @@
+%% -*- erlang -*-
+{application, dispatcher,
+ [
+  {description, "Command dispatcher based on rulesets."},
+  {vsn, "0.0.1"},
+  {licenses, ["MIT"]},
+  {registered, [dispatcher_sup]},
+  {applications,
+   [
+    kernel,
+    stdlib
+   ]},
+  {mod, {dispatcher_app, []}},
+  {env,
+   [
+   ]}
+ ]}.
