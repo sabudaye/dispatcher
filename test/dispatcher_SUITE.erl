@@ -18,9 +18,11 @@
 %% test case exports
 -export(
     [
-        test_default_command/1,
-        test_group_specific_command/1,
-        test_group_specific_command_no_rules/1
+        test_module_call_default_group/1,
+        test_module_call/1,
+        test_module_call_no_rules/1,
+        test_message/1,
+        test_group_message/1
     ]).
 
 -include_lib("common_test/include/ct.hrl").
@@ -41,9 +43,11 @@ groups() ->
     [
         {main, [shuffle],
             [
-                test_default_command,
-                test_group_specific_command,
-                test_group_specific_command_no_rules
+                test_module_call_default_group,
+                test_module_call,
+                test_module_call_no_rules,
+                test_message,
+                test_group_message
             ]
         }
     ].
@@ -56,6 +60,7 @@ end_per_suite(Config) ->
 
 init_per_group(_, Config) ->
     ok = dispatcher:start(),
+    {ok, _Pid} = dispatcher_test_receiver:start_link(),
     Config.
 
 end_per_group(_, _Config) ->
@@ -71,15 +76,23 @@ end_per_testcase(_, _Config) ->
 %%%===================================================================
 %%% Test Cases
 %%%===================================================================
-test_default_command(_Config) ->
-    ok = dispatcher:command(test_command),
+test_module_call_default_group(_Config) ->
+    ok = dispatcher:command(test_command, test_args),
     ok.
 
-test_group_specific_command(_Config) ->
-    ok = dispatcher:command({test_app2, test_command}),
+test_module_call(_Config) ->
+    ok = dispatcher:command({test_app2, test_command}, test_args),
     ok.
 
-test_group_specific_command_no_rules(_Config) ->
-    ok = dispatcher:command({test_app2, test2}),
+test_module_call_no_rules(_Config) ->
+    ok = dispatcher:command({test_app2, test2}, test_args),
+    ok.
+
+test_message(_Config) ->
+    ok = dispatcher:command({dispatcher_test_receiver, test_command2}, test_args),
+    ok.
+
+test_group_message(_Config) ->
+    ok = dispatcher:command({dispatcher_test_receiver, test_command3}, test_args),
     ok.
 
