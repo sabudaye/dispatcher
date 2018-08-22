@@ -25,7 +25,7 @@ clean-all: clean
 	rm -rf deps
 
 test:
-	ERL_LIBS=./examples $(REBAR) ct skip_deps=true verbose=3
+	$(REBAR) ct --sys_config=config/test.config skip_deps=true verbose=3
 
 xref:
 	ERL_LIBS=./deps $(REBAR) xref skip_deps=true

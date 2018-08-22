@@ -32,6 +32,6 @@ start_link() ->
 
 init([]) ->
     Children = [
-		  %?CHILD(dispatcher_command_handler, worker),
+		  ?CHILD(dispatcher_command_handler, worker)
 		],
     {ok, {{one_for_one, 5, 10}, Children}}.

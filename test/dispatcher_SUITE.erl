@@ -44,7 +44,7 @@ groups() ->
     ].
 
 init_per_suite(Config) ->
-  Config.
+    Config.
 
 end_per_suite(Config) ->
     Config.

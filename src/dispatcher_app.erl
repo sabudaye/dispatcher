@@ -16,6 +16,7 @@
 %% ===================================================================
 -spec start(any(), list()) -> {ok, pid()} | ignore | {error, atom()}.
 start(_StartType, _StartArgs) ->
+    dispatcher_rulesets:new(),
     dispatcher_sup:start_link().
 
 -spec stop(any()) -> ok.
