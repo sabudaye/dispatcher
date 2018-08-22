@@ -72,11 +72,11 @@ end_per_testcase(_, _Config) ->
 %%% Test Cases
 %%%===================================================================
 test_default_command(_Config) ->
-    ok = dispatcher:command(test),
+    ok = dispatcher:command(test_command),
     ok.
 
 test_group_specific_command(_Config) ->
-    ok = dispatcher:command({test_app2, test3}),
+    ok = dispatcher:command({test_app2, test_command}),
     ok.
 
 test_group_specific_command_no_rules(_Config) ->

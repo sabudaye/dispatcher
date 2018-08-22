@@ -76,6 +76,14 @@ code_change(_OldVsn, State, _Extra) ->
 %% internal functions
 %% ===================================================================
 
+apply_command({Function, Args} = Command, Rules) ->
+    case proplists:get_value(Function, Rules) of
+        undefined -> lager:info("no rules for command ~p, rules: ~p", [Command, Rules]);
+        Module ->
+            lager:info("call function ~p in module ~p, rules: ~p", [Function, Module, Rules]),
+            Module:Function(Args)
+    end,
+    ok;
 apply_command(Command, Rules) ->
     case proplists:get_value(Command, Rules) of
         undefined -> lager:info("no rules for command ~p, rules: ~p", [Command, Rules]);
