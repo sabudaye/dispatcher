@@ -25,11 +25,13 @@
 %% API functions
 %% ===================================================================
 
+-spec start_link(list()) -> {ok, pid()} | ignore | {error, term()}.
 start_link([]) ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
-command(_Command) ->
-    gen_server:cast(?MODULE, commmand).
+-spec command(term()) -> ok.
+command(Command) ->
+    gen_server:cast(?MODULE, {command, Command}).
 
 %% ===================================================================
 %% gen_server callbacks
@@ -41,7 +43,7 @@ init([]) ->
 handle_call(_Msg, _From, State) ->
     {reply, ok, State}.
 
-handle_cast(command, State) ->
+handle_cast({command, _Command}, State) ->
     {noreply, State};
 handle_cast(_Msg, State) ->
     {noreply, State}.

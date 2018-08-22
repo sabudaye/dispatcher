@@ -18,7 +18,7 @@
 %% test case exports
 -export(
    [
-    test_run/1
+    test_command/1
    ]).
 
 -include_lib("common_test/include/ct.hrl").
@@ -39,7 +39,7 @@ groups() ->
     [
      {main, [shuffle],
       [
-        test_run
+        test_command
       ]}
     ].
 
@@ -66,6 +66,6 @@ end_per_testcase(_, _Config) ->
 %%%===================================================================
 %%% Test Cases
 %%%===================================================================
-test_run(_Config) ->
-  ct:log("it works!", []),
+test_command(_Config) ->
+  ok = dispatcher:command(test),
   ok.
