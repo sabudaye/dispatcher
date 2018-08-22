@@ -7,19 +7,21 @@
 
 %% common_test exports
 -export(
-   [
-    all/0, group/1, groups/0,
-    init_per_suite/1, end_per_suite/1,
-    init_per_group/2,
-    end_per_group/2,
-    init_per_testcase/2, end_per_testcase/2
-   ]).
+    [
+        all/0, group/1, groups/0,
+        init_per_suite/1, end_per_suite/1,
+        init_per_group/2,
+        end_per_group/2,
+        init_per_testcase/2, end_per_testcase/2
+    ]).
 
 %% test case exports
 -export(
-   [
-    test_command/1
-   ]).
+    [
+        test_default_command/1,
+        test_group_specific_command/1,
+        test_group_specific_command_no_rules/1
+    ]).
 
 -include_lib("common_test/include/ct.hrl").
 
@@ -29,7 +31,7 @@
 
 all() ->
     [
-     {group, main}
+        {group, main}
     ].
 
 group(main) ->
@@ -37,10 +39,13 @@ group(main) ->
 
 groups() ->
     [
-     {main, [shuffle],
-      [
-        test_command
-      ]}
+        {main, [shuffle],
+            [
+                test_default_command,
+                test_group_specific_command,
+                test_group_specific_command_no_rules
+            ]
+        }
     ].
 
 init_per_suite(Config) ->
@@ -66,6 +71,15 @@ end_per_testcase(_, _Config) ->
 %%%===================================================================
 %%% Test Cases
 %%%===================================================================
-test_command(_Config) ->
-  ok = dispatcher:command(test),
-  ok.
+test_default_command(_Config) ->
+    ok = dispatcher:command(test),
+    ok.
+
+test_group_specific_command(_Config) ->
+    ok = dispatcher:command({test_app2, test3}),
+    ok.
+
+test_group_specific_command_no_rules(_Config) ->
+    ok = dispatcher:command({test_app2, test2}),
+    ok.
+
