@@ -60,7 +60,6 @@ end_per_suite(Config) ->
 
 init_per_group(_, Config) ->
     ok = dispatcher:start(),
-    {ok, _Pid} = dispatcher_test_receiver:start_link(),
     Config.
 
 end_per_group(_, _Config) ->
@@ -68,6 +67,8 @@ end_per_group(_, _Config) ->
     ok.
 
 init_per_testcase(_, Config) ->
+    {ok, Pid} = dispatcher_test_receiver:start_link(),
+    dispatcher:register_receiver_process(dispatcher_test_receiver, Pid),
     Config.
 
 end_per_testcase(_, _Config) ->
@@ -89,10 +90,10 @@ test_module_call_no_rules(_Config) ->
     ok.
 
 test_message(_Config) ->
-    ok = dispatcher:command({dispatcher_test_receiver, test_command2}, test_args),
+    ok = dispatcher:command({dispatcher_test_receiver, message_to_some_process}, test_args),
     ok.
 
 test_group_message(_Config) ->
-    ok = dispatcher:command({dispatcher_test_receiver, test_command3}, test_args),
+    ok = dispatcher:command({dispatcher_test_receiver, message_to_group}, test_args),
     ok.
 

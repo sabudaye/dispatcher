@@ -29,6 +29,7 @@ unregister(Group, Pid) ->
 -spec get_pid(atom()) -> pid() | {error, empty_process_group}.
 get_pid(Group) ->
     Members = pg2:get_members(Group),
+    lager:info("members: ~p", [Members]),
     Members1 = lists:map(
       fun(Pid) ->
           [{message_queue_len, Messages}] = erlang:process_info(Pid, [message_queue_len]),

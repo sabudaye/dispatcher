@@ -25,9 +25,7 @@
 
 -spec start_link() -> {ok, pid()} | ignore | {error, term()}.
 start_link() ->
-    {ok, Pid} = Result = gen_server:start_link({local, ?MODULE}, ?MODULE, [], []),
-    dispatcher:register_receiver_process(?MODULE, Pid),
-    Result.
+    gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 %% ===================================================================
 %% gen_server callbacks
